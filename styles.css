@@ -1,0 +1,54 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wrapper main {
+  background-color: #b0b0b0;
+  width: 30rem;
+  height: 40rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(11, 1fr);
+}
+.wrapper main header {
+  display: flex;
+  gap: 1rem;
+  grid-row: 1/2;
+}
+.wrapper main #input-container {
+  grid-row: 2/5;
+}
+.wrapper main #input-container input {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: #fff;
+  font-size: 2rem;
+  direction: rtl;
+  padding: 1rem;
+}
+.wrapper main #keypad-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row: 5/12;
+}
+.wrapper main #keypad-container div button {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}/*# sourceMappingURL=styles.css.map */
