@@ -118,7 +118,7 @@ function processInputs() {
 // Displays output to the screen
 function displayOutput(output) {
   const outputEl = document.getElementById("output");
-  outputEl.innerHTML = output;
+  outputEl.innerHTML = Number.isInteger(output) ? output : output.toFixed(5);
 }
 
 // Calculate entered inputs
