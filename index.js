@@ -18,9 +18,17 @@ const functionalities = ["clear", "delete", "minus", "calculate"];
 // Handle entered value
 function valueHandler(event) {
   try {
-    const value = event.target.value;
-    let lastValue = inputArr.pop();
+    // const value = event.target.value;
+    const buttonEl = event.target.closest("button");
+    let value = "";
 
+    if (buttonEl) {
+      value = buttonEl.value;
+      console.log("Button value: ", value);
+    }
+
+    let lastValue = inputArr.pop();
+    console.log(value);
     // If entered value is number
     if (nums.includes(value)) {
       if (typeof lastValue === "undefined" && lastValue !== ".") {
@@ -60,15 +68,20 @@ function valueHandler(event) {
     else if (functionalities.includes(value)) {
       if (value === "clear") {
         inputArr = [];
+        displayOutput("");
       } else if (value === "delete") {
         inputArr.push(lastValue);
         inputArr.splice(-1);
-      } else if (value === "minus" && Number.isInteger(parseInt(lastValue))) {
-        inputArr.push(`(${-parseInt(lastValue)})`);
+      } else if (value === "minus") {
+        if (lastValue.includes("(")) {
+          lastValue = lastValue.replace(/[() -]/g, "");
+          inputArr.push(lastValue);
+        } else if (Number.isInteger(parseInt(lastValue))) {
+          inputArr.push(`(${-parseInt(lastValue)})`);
+        }
       } else {
         inputArr.push(lastValue);
         processInputs();
-        // calculate();
       }
     } else {
       throw new Error("Invalid input!");
@@ -81,12 +94,20 @@ function valueHandler(event) {
 
 // Loops through all the inputs and calculate output
 function processInputs() {
+  if (inputArr.length < 3) {
+    displayOutput(inputArr[0]);
+    return;
+  }
   let tempArr = [...inputArr];
   let total = 0;
   for (let i = 0; i < inputArr.length; i += 3) {
     let num1 = tempArr.shift(i);
     let operator = tempArr.shift(i + 1);
     let num2 = tempArr.shift(i + 2);
+
+    if (!parseFloat(num1)) num1 = num1.replace(/[()]/, "");
+    if (!parseFloat(num2)) num2 = num2.replace(/[()]/, "");
+
     total = calculate(operator, parseFloat(num1), parseFloat(num2));
     tempArr.unshift(total);
   }
@@ -102,6 +123,7 @@ function displayOutput(output) {
 
 // Calculate entered inputs
 function calculate(operator, num1, num2 = 0) {
+  let total;
   switch (operator) {
     case "+":
       total = num1 + num2;
@@ -131,11 +153,7 @@ function display() {
 function init() {
   const keyPadEl = document.getElementById("keypad-container");
 
-  const buttonEls = keyPadEl.querySelectorAll("button");
-
-  buttonEls.forEach((buttonEL) => {
-    buttonEL.addEventListener("click", valueHandler);
-  });
+  keyPadEl.addEventListener("click", valueHandler);
 }
 
 init();
