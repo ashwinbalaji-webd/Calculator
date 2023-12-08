@@ -19,19 +19,14 @@ html {
 }
 .wrapper main {
   background-color: #b0b0b0;
-  width: 30rem;
   height: 40rem;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(11, 1fr);
 }
-.wrapper main header {
-  display: flex;
-  gap: 1rem;
-  grid-row: 1/2;
-}
 .wrapper main #input-container {
-  grid-row: 2/5;
+  grid-row: 1/5;
+  position: relative;
 }
 .wrapper main #input-container input {
   height: 100%;
@@ -40,6 +35,15 @@ html {
   color: #fff;
   font-size: 2rem;
   padding: 1rem;
+  padding-block-end: 4rem;
+}
+.wrapper main #input-container #output {
+  position: absolute;
+  z-index: 2;
+  font-size: 2rem;
+  color: #b0b0b0;
+  bottom: 12px;
+  left: 12px;
 }
 .wrapper main #keypad-container {
   display: grid;
@@ -50,4 +54,13 @@ html {
   cursor: pointer;
   width: 100%;
   height: 100%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 500px) {
+  .wrapper main {
+    background-color: aqua;
+    width: 100%;
+    height: 100%;
+  }
 }/*# sourceMappingURL=styles.css.map */

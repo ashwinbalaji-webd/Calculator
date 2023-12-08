@@ -1,8 +1,4 @@
 `use strict`;
-
-let total = 0;
-let tempNum = "";
-let inputDisplay = "";
 let inputArr = [];
 const notNums = [
   "+",
@@ -31,7 +27,7 @@ function valueHandler(event) {
         lastValue = value;
         inputArr.push(lastValue);
       } else if (
-        (value === "." && !lastValue.split("").includes(".")) ||
+        (value === "." && !lastValue.toString().split("").includes(".")) ||
         value !== "."
       ) {
         if (operations.includes(lastValue)) {
@@ -40,14 +36,23 @@ function valueHandler(event) {
           lastValue += value;
           inputArr.push(lastValue);
         }
+      } else {
+        inputArr.push(lastValue);
       }
     }
     // If entered value is an operation
     else if (operations.includes(value)) {
-      if (operations.includes(lastValue)) {
+      if (parseFloat(lastValue) && value === "%") {
+        inputArr.push((lastValue / 100).toString());
+      } else if (operations.includes(lastValue) && value === "%") {
+        inputArr.push(lastValue);
+      } else if (
+        (operations.includes(lastValue) && lastValue !== "%") ||
+        lastValue === value
+      ) {
         lastValue = value;
         inputArr.push(lastValue);
-      } else {
+      } else if (typeof lastValue !== "undefined") {
         inputArr.push(...[lastValue, value]);
       }
     }
@@ -62,7 +67,8 @@ function valueHandler(event) {
         inputArr.push(`(${-parseInt(lastValue)})`);
       } else {
         inputArr.push(lastValue);
-        calculate();
+        processInputs();
+        // calculate();
       }
     } else {
       throw new Error("Invalid input!");
@@ -73,7 +79,46 @@ function valueHandler(event) {
   }
 }
 
-function calculate() {}
+// Loops through all the inputs and calculate output
+function processInputs() {
+  let tempArr = [...inputArr];
+  let total = 0;
+  for (let i = 0; i < inputArr.length; i += 3) {
+    let num1 = tempArr.shift(i);
+    let operator = tempArr.shift(i + 1);
+    let num2 = tempArr.shift(i + 2);
+    total = calculate(operator, parseFloat(num1), parseFloat(num2));
+    tempArr.unshift(total);
+  }
+
+  displayOutput(tempArr[0]);
+}
+
+// Displays output to the screen
+function displayOutput(output) {
+  const outputEl = document.getElementById("output");
+  outputEl.innerHTML = output;
+}
+
+// Calculate entered inputs
+function calculate(operator, num1, num2 = 0) {
+  switch (operator) {
+    case "+":
+      total = num1 + num2;
+      break;
+    case "-":
+      total = num1 - num2;
+      break;
+    case "*":
+      total = num1 * num2;
+      break;
+    case "/":
+      total = num1 / num2;
+      break;
+  }
+
+  return total;
+}
 
 // Display entered values in the input field
 function display() {
