@@ -94,8 +94,8 @@ function processInputs() {
     let operator = tempArr.shift(i + 1);
     let num2 = tempArr.shift(i + 2);
     if (num1 && num2) {
-      if (!parseFloat(num1)) num1 = num1.replace(/[()]/, "");
-      if (!parseFloat(num2)) num2 = num2.replace(/[()]/, "");
+      if (!parseFloat(num1)) num1 = num1.replace(/[()]/g, "");
+      if (!parseFloat(num2)) num2 = num2.replace(/[()]/g, "");
 
       total = calculate(operator, parseFloat(num1), parseFloat(num2));
       tempArr.unshift(total);
@@ -108,13 +108,18 @@ function processInputs() {
 // Displays output to the screen
 function displayOutput(output) {
   const outputEl = document.getElementById("output");
-  if(output){
+  if(output.includes('(')){
+    output = output.replace(/[()]/g, "");
+  }
+  else if(output){
     output = parseFloat(output);
-    outputEl.innerHTML = Number.isInteger(output) ? output : output.toFixed(5);
+    output = Number.isInteger(output) ? output : output.toFixed(5);
   }
   else{
-    outputEl.innerHTML = '';
+    output = '';
   }
+
+  outputEl.innerHTML = output;
 }
 
 // Calculate entered inputs
