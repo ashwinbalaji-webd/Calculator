@@ -13,11 +13,9 @@ function valueHandler(event) {
 
     if (buttonEl) {
       value = buttonEl.value;
-      console.log("Button value: ", value);
     }
 
     let lastValue = inputArr.pop();
-    console.log(value);
     // If entered value is number
     if (nums.includes(value)) {
       if (typeof lastValue === "undefined" && lastValue !== ".") {
@@ -102,21 +100,18 @@ function processInputs() {
       displayOutput(tempArr[0]);
     }
   }
-
 }
 
 // Displays output to the screen
 function displayOutput(output) {
   const outputEl = document.getElementById("output");
-  if(output.includes('(')){
+  if (output.includes("(")) {
     output = output.replace(/[()]/g, "");
-  }
-  else if(output){
+  } else if (output) {
     output = parseFloat(output);
     output = Number.isInteger(output) ? output : output.toFixed(5);
-  }
-  else{
-    output = '';
+  } else {
+    output = "";
   }
 
   outputEl.innerHTML = output;
@@ -146,7 +141,6 @@ function calculate(operator, num1, num2 = 0) {
 // Display entered values in the input field
 function display() {
   const inputEl = document.getElementById("input");
-  console.log(inputArr);
   inputEl.value = inputArr.join("");
 }
 
